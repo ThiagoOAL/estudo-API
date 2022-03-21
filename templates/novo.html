@@ -1,0 +1,20 @@
+{% extends "template.html" %}
+{% block conteudo %}
+      <form action="{{url_for('criar')}}" method="post">
+        <fieldset>
+          <div class="form-group">
+            <label for="Tipo de serviço">Tipo de serviço</label>
+            <input type="text" id="Tipo de serviço" name="Tipo de serviço" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="descrição do problema">descrição do problema</label>
+            <input type="text" id="descrição do problema" name="descrição do problema" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="Data">Data e hora</label>
+            <input type="date" id="Data" name="Data" class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary btn-salvar">Solicitar</button>
+        </fieldset>
+      </form>
+{% endblock %}
