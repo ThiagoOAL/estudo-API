@@ -11,9 +11,9 @@
             <tbody>
                 {% for solicitacao in demanda %}
                 <tr>
-                    <td>{{ solicitacao.tipo }}</td>
-                    <td>{{ solicitacao.descricao }}</td>
-                    <td>{{ solicitacao.data }}</td>
+                    <td>{{ solicitacao[1]}}</td>
+                    <td>{{ solicitacao[2]}}</td>
+                    <td>{{ solicitacao[3]}}</td>
                 </tr>
                 {% endfor %}
 

@@ -1,22 +1,14 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for
+from dao import SolicitaDao
+from flask_mysqldb import MySQL
+from models import Solicita, Usuario
 
-
-class Solicita:
-    def __init__(self, tipo, descricao, data):
-        self.tipo=tipo
-        self.descricao=descricao
-        self.data=data
 
 
 solicitacao1 = Solicita('Solução em Hardware', 'meu monitor não liga', '19/03/2022')
 solicitacao2 = Solicita('Solução em software', 'o app do Java não ta rodando', '21/03/2022')
 listando = [solicitacao1, solicitacao2]
 
-class Usuario:
-    def __init__(self, nome, nickname, senha):
-        self.nome = nome
-        self.nickname = nickname
-        self.senha=senha
 
 usuario1 = Usuario('Thiago Leite', 'TL', 'fatec')
 usuario2 = Usuario('Mateus Augusto', 'MA', 'fatec1')
@@ -33,6 +25,15 @@ usuarios = {usuario1.nickname: usuario1,
 app = Flask(__name__)
 app.secret_key = 'whatscode'
 
+app.config['MYSQL_HOST'] = "127.0.0.1"
+app.config['MYSQL_USER'] = "root"
+app.config['MYSQL_PASSWORD'] = "thiago123"
+app.config['MYSQL_DB'] = "service"
+app.config['MYSQL_PORT'] = 3306
+
+db = MySQL(app)
+
+solicitacao_dao = SolicitaDao(db)
 
 @app.route('/')
 def index():
@@ -42,8 +43,8 @@ def index():
 
 @app.route('/solicitacoes')
 def solicitando():
-
-    return render_template('solicitacoes.html', titulo='Minhas solicitações', demanda=listando)
+    lista = solicitacao_dao.listar()
+    return render_template('solicitacoes.html', titulo='Minhas solicitações', demanda=lista)
 
 
 @app.route('/novo')
@@ -56,9 +57,9 @@ def novo():
 def criar():
     tipo = request.form['Tipo de serviço']
     descricao = request.form['descrição do problema']
-    data = request.form['Data']
-    solicitacao = Solicita(tipo, descricao, data)
-    listando.append(solicitacao)
+    data_solicitacao = request.form['Data']
+    solicitacao = Solicita(tipo, descricao, data_solicitacao)
+    solicitacao_dao.salvar(solicitacao)
 
     return redirect(url_for('solicitando'))
 
