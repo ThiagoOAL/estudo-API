@@ -3,8 +3,19 @@
       <form action="{{url_for('criar')}}" method="post">
         <fieldset>
           <div class="form-group">
-            <label for="Tipo de serviço">Tipo de serviço</label>
-            <input type="text" id="Tipo de serviço" name="Tipo de serviço" class="form-control">
+            
+            <label for="categoria">Tipo de serviço:</label>
+            
+            <select name="Tipo de serviço" id="Tipo de serviço" class="form-control" method="POST">
+              <option name="Tipo de serviço" value="1" selected>Problema no hardware</option>
+              <option name="Tipo de serviço" value="2" selected>Problema com softaware</option>
+              <option name="Tipo de serviço" value="3" selected>Dúvidas/esclarecimentos</option>
+
+              
+            </select>
+
+            <!-- <label for="Tipo de serviço">Tipo de serviço</label>
+            <input type="text" id="Tipo de serviço" name="Tipo de serviço" class="form-control"> -->
           </div>
           <div class="form-group">
             <label for="descrição do problema">descrição do problema</label>

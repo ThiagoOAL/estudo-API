@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/estilo-usuario-historico.css">
+    
+    <title>Usuário - Histórico</title>
+</head>
+<body>
+    <header>
+        <h1 id="header-nome-usuario">NOME DO USUÁRIO</h1>
+        <div class="header-botao">
+            <button class="header-menu"><img src="icon menu.png" alt="botao menu"></button>
+            <div class="header-menu-expandido ">
+                <a class="menu-itens" href="#">Link 1</a>
+                <a class="menu-itens" href="#">Link 2</a>
+                <hr>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section class="pesquisa">
+            <form action="" method="get" >
+                <input type="text" name="search" id="busca" placeholder="TIPO DE SERVIÇO" required>
+                <button class="pesquisa-lupa" type="submit"><img src="lupa-arredondada.png" alt="icone menu"></button>
+            </form>
+        </section>
+        <form class="chamados">
+            <ul class="chamados-lista" type="none">
+                {% for solicitacao in demanda %}
+                <li class="chamados-itens">
+                    <details>
+                        <summary>
+                            <table class="table table-striped table-responsive table-bordered">
+                            <thead class="thead-default">
+                                
+                                <tr>
+                                    <th>{{ solicitacao.fk_categoria_solicitacao}}&nbsp;&nbsp;&nbsp;</th>
+                                    
+                                    <th>{{ solicitacao.data_abertura}}</th>
+                                </tr>
+                            </thead>
+                            </table>
+
+                            </summary>
+                        <div class=chamados-itens-conteudo>
+                            <p >
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ solicitacao.descricao_solicitacao}}</td>
+                                        </tr>
+                                        
+                        
+                                    </tbody>
+                                </table>
+                            </p>
+                        </div>
+                    </details>
+                </li>
+                {% endfor %}
+            </ul>
+        </form>
+    </main>
+    <footer>
+        <p>DESENVOLVIDO POR WHATSCODE</p>
+    </footer>
+</body>
+</html>

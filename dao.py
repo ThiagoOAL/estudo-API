@@ -4,10 +4,12 @@ SQL_DELETA_JOGO = 'delete from jogo where id = %s'
 SQL_JOGO_POR_ID = 'SELECT id, nome, categoria, console from jogo where id = %s'
 SQL_USUARIO_POR_ID = 'SELECT id, nome, senha from usuario where id = %s'
 SQL_ATUALIZA_SOLICITACAO = 'UPDATE solicitacao SET tipo=%s, descricao=%s, data_solicitacao=%s where id = %s'
-SQL_BUSCA_SOLICITACAO = 'SELECT id, tipo, descricao, data_solicitacao from solicitacao'
-SQL_CRIA_SOLICITACAO = 'INSERT into solicitacao (tipo, descricao, data_solicitacao) values (%s, %s, %s)'
-SQL_TESTE = 'SELECT id, tipo, descricao, data_solicitacao FROM  solicitacao'
+SQL_BUSCA_SOLICITACAO = 'SELECT id_solicitacao, categoria_solicitacao, descricao_solicitacao, data_abertura FROM solicitacoes INNER JOIN categoria_solicitacoes ON solicitacoes.fk_categoria_solicitacao = categoria_solicitacoes.id_categoria_solicitacao'
+# SQL_CRIA_SOLICITACAO = 'INSERT into solicitacao (tipo, descricao, data_solicitacao) values (%s, %s, %s)'
+SQL_CRIA_SOLICITACAO = 'INSERT into solicitacoes (fk_categoria_solicitacao, descricao_solicitacao, data_abertura) values (%s, %s, %s)'
 
+SQL_TESTE = 'SELECT id, tipo, descricao, data_solicitacao FROM  solicitacao'
+#SQL_BUSCA_CATEGORIA = 'SELECT id_categoria_solicitacao, categoria_solicitacao from categoria_solicitacoes'
 
 class SolicitaDao:
     def __init__(self, db):
@@ -19,7 +21,7 @@ class SolicitaDao:
         if (solicitacao.id):
             cursor.execute(SQL_ATUALIZA_SOLICITACAO, (solicitacao.tipo, solicitacao.descricao, solicitacao.data_solicitacao, solicitacao.id))
         else:
-            cursor.execute(SQL_CRIA_SOLICITACAO, (solicitacao.tipo, solicitacao.descricao, solicitacao.data_solicitacao))
+            cursor.execute(SQL_CRIA_SOLICITACAO, (solicitacao.fk_categoria_solicitacao, solicitacao.descricao_solicitacao, solicitacao.data_abertura))
             solicitacao.id = cursor.lastrowid
         self.__db.connection.commit()
         return solicitacao
@@ -30,9 +32,15 @@ class SolicitaDao:
         # solicitacoes = (cursor.fetchall())
         # print(solicitacoes[0])
         solicitacoes = traduz_solicitacoes(cursor.fetchall())
-        print(solicitacoes)
-        
         return solicitacoes
+
+
+
+    # def lista_categ(self):
+    #     cursor = self.__db.connection.cursor()
+    #     cursor.execute(SQL_BUSCA_CATEGORIA)
+    #     solicitacoes = traduz_solicitacoes_categ(cursor.fetchall())
+    #     return solicitacoes
 
 #     def busca_por_id(self, id):
 #         cursor = self.__db.connection.cursor()
@@ -58,13 +66,14 @@ class SolicitaDao:
 
 
 def traduz_solicitacoes(solicitacoes):
-   
-    objeto =  list(solicitacoes)
-    #def cria_solicitacao_com_tupla(objeto):
-        #return solicitacoes(objeto[0])
-    print(objeto)
-    return objeto
+    def cria_solicitacao_com_tupla(tupla):
+        return Solicita(tupla[1], tupla[2], tupla[3], id=tupla[0])
+    return list(map(cria_solicitacao_com_tupla, solicitacoes))
 
+# def traduz_solicitacoes_categ(solicitacoes):
+#     def cria_solicitacao_com_tupla(tupla):
+#         return Categoria(tupla[1],id_categoria_solicitacao=tupla[0])
+#     return list(map(cria_solicitacao_com_tupla, solicitacoes))
 
 # def traduz_usuario(tupla):
 #     return Usuario(tupla[0], tupla[1], tupla[2])

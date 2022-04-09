@@ -5,9 +5,10 @@ from models import Solicita, Usuario
 
 
 
-solicitacao1 = Solicita('Solução em Hardware', 'meu monitor não liga', '19/03/2022')
-solicitacao2 = Solicita('Solução em software', 'o app do Java não ta rodando', '21/03/2022')
-listando = [solicitacao1, solicitacao2]
+
+# solicitacao1 = Solicita('Solução em Hardware', 'meu monitor não liga', '19/03/2022')
+# solicitacao2 = Solicita('Solução em software', 'o app do Java não ta rodando', '21/03/2022')
+# listando = [solicitacao1, solicitacao2]
 
 
 usuario1 = Usuario('Thiago Leite', 'TL', 'fatec')
@@ -44,7 +45,7 @@ def index():
 @app.route('/solicitacoes')
 def solicitando():
     lista = solicitacao_dao.listar()
-    return render_template('solicitacoes.html', titulo='Minhas solicitações', demanda=lista)
+    return render_template('usuario-historico.html', titulo='Minhas solicitações', demanda=lista)
 
 
 @app.route('/novo')
@@ -52,6 +53,7 @@ def novo():
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
         return redirect(url_for('login', proxima=url_for('novo')))
     return render_template('novo.html', titulo='Solicitação de serviço')
+
 
 @app.route('/criar', methods=['POST',])
 def criar():
